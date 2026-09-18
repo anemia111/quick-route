@@ -43,7 +43,7 @@ export default function App() {
     };
   }, []);
   useEffect(() => {
-    heading.current?.focus();
+    heading.current?.focus({ preventScroll: true });
   }, [editing]);
   function search(reverse: boolean) {
     if (!stations) return;

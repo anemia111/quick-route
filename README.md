@@ -73,3 +73,5 @@ Viteのbase、Manifestのid/start_url/scope、Service Workerは `/quick-route/` 
 ## 検証
 
 Vitest / Testing Libraryで入力エラー、同一駅、保存・再読み込み、編集・入れ替え、破損データ、保存失敗、URLエンコード、日本時間の年跨ぎ・午前0時、無効入力をテストしています。公開後の確認結果は `VERIFICATION.md` に記録します。
+
+同一ホストの別PWAを以前使っていたブラウザでは、既存のキャッシュが干渉する場合があります。別ブラウザやプライベートブラウズで切り分けてください。詳しくは [検証記録](VERIFICATION.md) を参照してください。
