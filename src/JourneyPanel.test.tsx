@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
 import JourneyPanel from "./JourneyPanel";
@@ -112,6 +112,51 @@ it("restores a paused journey honestly and allows ending without position", asyn
   expect(screen.getByText(/非表示中の追跡は行っていません/)).toBeVisible();
   await userEvent.click(screen.getByText("追跡を終了"));
   expect(screen.getByText("この経路で移動を開始")).toBeVisible();
+});
+it("rejects poor GPS and stops location watching when hidden, then requires confirmation on return", async () => {
+  let report: PositionCallback | undefined;
+  const clearWatch = vi.fn();
+  Object.defineProperty(navigator, "geolocation", {
+    configurable: true,
+    value: {
+      watchPosition: vi.fn((callback: PositionCallback) => {
+        report = callback;
+        return 7;
+      }),
+      clearWatch,
+    },
+  });
+  const original = Object.getOwnPropertyDescriptor(document, "visibilityState");
+  render(<JourneyPanel {...props} />);
+  const u = userEvent.setup();
+  await u.click(screen.getByText("この経路で移動を開始"));
+  await u.click(screen.getByText("位置情報で近くの駅を確認"));
+  act(() =>
+    report!({
+      coords: { accuracy: 500, latitude: 0, longitude: 0 },
+    } as GeolocationPosition),
+  );
+  expect(screen.getByText(/GPSの精度が不足/)).toBeVisible();
+  expect(screen.queryByText(/駅にいると確認する/)).not.toBeInTheDocument();
+  try {
+    Object.defineProperty(document, "visibilityState", {
+      configurable: true,
+      value: "hidden",
+    });
+    act(() => document.dispatchEvent(new Event("visibilitychange")));
+    expect(clearWatch).toHaveBeenCalledWith(7);
+    expect(screen.getByText(/追跡を一時停止/)).toBeVisible();
+    Object.defineProperty(document, "visibilityState", {
+      configurable: true,
+      value: "visible",
+    });
+    act(() => document.dispatchEvent(new Event("visibilitychange")));
+    expect(screen.getByText(/アプリ復帰後の情報を更新/)).toBeVisible();
+    expect(screen.getByRole("combobox")).toHaveValue("");
+  } finally {
+    if (original) Object.defineProperty(document, "visibilityState", original);
+    else Reflect.deleteProperty(document, "visibilityState");
+  }
 });
 it("does not switch route until the user approves a meaningful alternative", async () => {
   const alt = {

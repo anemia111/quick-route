@@ -29,7 +29,7 @@
 | 検証 | 結果・範囲 |
 |---|---|
 | TypeScript型チェック | 成功 |
-| Vitest単体・結合 | 7ファイル、40件成功 |
+| Vitest単体・結合 | 7ファイル、41件成功 |
 | Lint | 成功 |
 | 本番ビルド | 成功。Pagesの `/quick-route/` を維持 |
 | Playwright | Chromium 4件、Windows WebKit 4件、計8件成功 |

@@ -53,7 +53,7 @@ N02の次年度版を導入するときはURLと基準年を明示的に更新�
 
 ## 自動検証・デプロイ
 
-PRの `check.yml` は型チェック・40件の単体／結合テスト・Lint・本番ビルド・PlaywrightのChromium／WebKit検証を実行。mainの既存 `deploy.yml` はLintも含め検証後にGitHub Pagesへ配信します。base・Manifest・Service Workerは `/quick-route/`。Service Workerの更新でIndexedDBや駅設定を消去しません。
+PRの `check.yml` は型チェック・41件の単体／結合テスト・Lint・本番ビルド・PlaywrightのChromium／WebKit検証を実行。mainの既存 `deploy.yml` はLintも含め検証後にGitHub Pagesへ配信します。base・Manifest・Service Workerは `/quick-route/`。Service Workerの更新でIndexedDBや駅設定を消去しません。
 
 公開データには国土交通省、東京都交通局・公共交通オープンデータ協議会のCC BY 4.0データを使用し加工しています。[ソフトウェアのライセンス](public/licenses.txt)も同梱。APIキーは不要でフロントエンドに秘密情報を埋め込んでいません。ODPT基本ライセンス・期間限定ライセンスのデータはこの配信に収録していません。
 
