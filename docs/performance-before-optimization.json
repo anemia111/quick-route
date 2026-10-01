@@ -1,0 +1,117 @@
+{
+  "date": "2026-10-01",
+  "environment": "Windows desktop Chromium; 320x640; local Vite preview; no throttling; 5 samples, medians; not iPhone",
+  "startup": {
+    "baseline": {
+      "coldButtonVisibleMs": 211.5958999999998,
+      "warmButtonVisibleMs": 40.99030000000039,
+      "fcpMs": 208,
+      "resourceTransferBytesFirstSecond": 73780,
+      "samples": {
+        "cold": [
+          367.9597000000001,
+          211.5958999999998,
+          230.0585000000001,
+          195.3719999999994,
+          204.13250000000062
+        ],
+        "warm": [
+          49.177200000000084,
+          39.429999999999836,
+          35.32480000000032,
+          40.99030000000039,
+          44.63249999999971
+        ]
+      }
+    },
+    "next": {
+      "coldButtonVisibleMs": 254.94910000000164,
+      "warmButtonVisibleMs": 62.91020000000026,
+      "fcpMs": 252,
+      "resourceTransferBytesFirstSecond": 520745,
+      "samples": {
+        "cold": [
+          227.9963000000007,
+          228.28470000000016,
+          301.3599000000013,
+          254.94910000000164,
+          318.27479999999923
+        ],
+        "warm": [
+          38.39959999999883,
+          62.91020000000026,
+          72.55789999999979,
+          54.30279999999948,
+          81.42250000000058
+        ]
+      }
+    }
+  },
+  "routing": {
+    "roundTripMs": [
+      239.10000002384186,
+      240.30000001192093,
+      209.0999999642372,
+      282.4000000357628,
+      245.0999999642372
+    ],
+    "workerComputeMs": [
+      172,
+      187.30000001192093,
+      152.5,
+      210.89999997615814,
+      176.5
+    ],
+    "candidates": 8,
+    "packages": 6,
+    "trips": 5600
+  },
+  "stationInputIncludingDebounceMs": 209.48549999999886,
+  "idle": {
+    "seconds": 5,
+    "mainThreadTaskSeconds": 0.004074,
+    "jsHeapUsedBytes": 62407104
+  },
+  "assets": [
+    {
+      "file": "index-BsowLxgD.js",
+      "bytes": 244344,
+      "gzipBytes": 76988
+    },
+    {
+      "file": "JourneyPanel-C5I3uGfT.js",
+      "bytes": 8895,
+      "gzipBytes": 3637
+    },
+    {
+      "file": "planner-DJrHXs0R.js",
+      "bytes": 1023,
+      "gzipBytes": 603
+    },
+    {
+      "file": "realtime-DjC9oZxe.js",
+      "bytes": 119515,
+      "gzipBytes": 33164
+    },
+    {
+      "file": "rolldown-runtime-D9-fqq9M.js",
+      "bytes": 86,
+      "gzipBytes": 88
+    },
+    {
+      "file": "router-DEkq2bmi.js",
+      "bytes": 4690,
+      "gzipBytes": 2171
+    },
+    {
+      "file": "router.worker-Sz2cNmIp.js",
+      "bytes": 8179,
+      "gzipBytes": 3514
+    }
+  ],
+  "data": {
+    "stationBytes": 1309704,
+    "timetableBytes": 4464442,
+    "stations": 10154
+  }
+}

@@ -211,11 +211,14 @@ h1 {
   margin-bottom: 7px;
 }
 .button-title {
+  display: block;
+  overflow-wrap: anywhere;
   font-size: 27px;
   font-weight: 700;
   letter-spacing: 0.5px;
 }
 .arrow-circle {
+  flex-shrink: 0;
   width: 44px;
   height: 44px;
   background: #ffffff22;
@@ -224,6 +227,23 @@ h1 {
   display: grid;
   place-items: center;
 }
+.route-button > span:first-child { min-width: 0; padding-right: 12px; }
+.muted { font-size: 12px; color: var(--muted); line-height: 1.7; }
+.candidates { padding: 0; list-style: none; margin: 8px 0; max-height: 240px; overflow: auto; }
+.candidates button, .journey-choice { width: 100%; min-height: 48px; padding: 12px; background: var(--panel); color: inherit; border: 1px solid var(--line); border-radius: 10px; text-align: left; margin: 3px 0; }
+.candidates small, .journey-choice small, .journey-panel li small { display: block; font-size: 11px; color: var(--muted); line-height: 1.6; overflow-wrap: anywhere; }
+.journey-panel { background: var(--panel); padding: 16px; border: 1px solid var(--line); border-radius: 20px; margin-top: 20px; }
+.journey-panel p { font-size: 13px; line-height: 1.7; }
+.journey-panel ol { padding-left: 22px; font-size: 13px; line-height: 1.8; }
+.chosen { border-color: #2167df; border-width: 2px; }
+.panel-heading { display: flex; align-items: center; gap: 8px; justify-content: space-between; }
+.panel-heading .cancel { margin: 0; }
+.route-alert { border: 1px solid #b98429; padding: 12px; border-radius: 12px; }
+select { width: 100%; min-height: 48px; font: inherit; color: inherit; background: var(--input); border: 1px solid var(--line); border-radius: 10px; }
+footer details { text-align: left; margin-top: 12px; line-height: 1.8; }
+footer summary { min-height: 44px; text-align: center; cursor: pointer; }
+footer a { color: inherit; }
+button:disabled { opacity: .65; cursor: default; }
 .search-note {
   font-size: 11px;
   line-height: 1.9;

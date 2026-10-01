@@ -1,6 +1,8 @@
 export interface Stations {
   nearby: string;
   destination: string;
+  nearbyId?: string;
+  destinationId?: string;
 }
 export const STORAGE_KEY = "quick-route.stations.v1";
 export function validateStations(value: Stations): string {
@@ -10,7 +12,12 @@ export function validateStations(value: Stations): string {
     return "駅名は100文字以内で入力してください。";
   if (
     value.nearby.trim().normalize("NFKC").toLowerCase() ===
-    value.destination.trim().normalize("NFKC").toLowerCase()
+      value.destination.trim().normalize("NFKC").toLowerCase() &&
+    !(
+      value.nearbyId &&
+      value.destinationId &&
+      value.nearbyId !== value.destinationId
+    )
   )
     return "同じ駅が入力されています。異なる2駅を登録してください。";
   return "";
@@ -34,6 +41,12 @@ export function loadStations(): { stations: Stations | null; error: string } {
       stations: {
         nearby: value.nearby.trim(),
         destination: value.destination.trim(),
+        ...("nearbyId" in value && typeof value.nearbyId === "string"
+          ? { nearbyId: value.nearbyId }
+          : {}),
+        ...("destinationId" in value && typeof value.destinationId === "string"
+          ? { destinationId: value.destinationId }
+          : {}),
       },
       error: "",
     };

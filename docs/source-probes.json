@@ -1,0 +1,595 @@
+{
+  "checked": "2026-10-01 JST",
+  "scope": "Unauthenticated GET, Origin https://anemia111.github.io; not an iPhone browser test",
+  "records": [
+    {
+      "name": "kotoden",
+      "url": "https://www.kotoden.co.jp/publichtm/gtfs/gtfsdata/gtfs_kd.zip",
+      "checked": "2026-10-01",
+      "method": "GET",
+      "origin": "https://anemia111.github.io",
+      "status": 200,
+      "cors": null,
+      "last_modified": "Thu, 29 Jan 2026 11:27:05 GMT",
+      "files": [
+        "agency.txt",
+        "calendar.txt",
+        "calendar_dates.txt",
+        "fare_attributes.txt",
+        "fare_rules.txt",
+        "feed_info.txt",
+        "routes.txt",
+        "shapes.txt",
+        "stops.txt",
+        "stop_times.txt",
+        "transfers.txt",
+        "translations.txt",
+        "trips.txt"
+      ],
+      "feed_info.txt": {
+        "rows": 1,
+        "sample": [
+          {
+            "feed_publisher_name": "高松琴平電気鉄道株式会社",
+            "feed_publisher_url": "http://www.kotoden.co.jp/",
+            "feed_lang": "ja",
+            "feed_start_date": "20251212",
+            "feed_end_date": "20270228",
+            "feed_version": "ことでん電車_2023年12月16日琴平線ダイヤ改正20260129再アップ"
+          }
+        ]
+      },
+      "routes.txt": {
+        "rows": 3,
+        "sample": [
+          {
+            "route_id": "琴平線",
+            "agency_id": "1470001002410",
+            "route_short_name": "",
+            "route_long_name": "ことでん琴平線",
+            "route_desc": "",
+            "route_type": "2",
+            "route_url": "",
+            "route_color": "FFEA19",
+            "route_text_color": "000000"
+          },
+          {
+            "route_id": "志度線",
+            "agency_id": "1470001002410",
+            "route_short_name": "",
+            "route_long_name": "ことでん志度線",
+            "route_desc": "",
+            "route_type": "2",
+            "route_url": "",
+            "route_color": "FA00CA",
+            "route_text_color": "FFFFFF"
+          },
+          {
+            "route_id": "長尾線",
+            "agency_id": "1470001002410",
+            "route_short_name": "",
+            "route_long_name": "ことでん長尾線",
+            "route_desc": "",
+            "route_type": "2",
+            "route_url": "",
+            "route_color": "00B141",
+            "route_text_color": "FFFFFF"
+          }
+        ]
+      },
+      "transfers.txt": {
+        "rows": 1,
+        "sample": [
+          {
+            "from_stop_id": "瓦町_駅",
+            "to_stop_id": "瓦町_駅",
+            "transfer_type": "0",
+            "min_transfer_time": ""
+          }
+        ]
+      },
+      "calendar.txt": {
+        "rows": 2,
+        "sample": [
+          {
+            "service_id": "平日",
+            "monday": "1",
+            "tuesday": "1",
+            "wednesday": "1",
+            "thursday": "1",
+            "friday": "1",
+            "saturday": "0",
+            "sunday": "0",
+            "start_date": "20251212",
+            "end_date": "20270228"
+          },
+          {
+            "service_id": "土日祝",
+            "monday": "0",
+            "tuesday": "0",
+            "wednesday": "0",
+            "thursday": "0",
+            "friday": "0",
+            "saturday": "1",
+            "sunday": "1",
+            "start_date": "20251212",
+            "end_date": "20270228"
+          }
+        ]
+      }
+    },
+    {
+      "name": "tosaden-current",
+      "url": "https://api-public.odpt.org/api/v4/files/odpt/TosadenTraffic/Streetcar.zip?date=current",
+      "checked": "2026-10-01",
+      "method": "GET",
+      "origin": "https://anemia111.github.io",
+      "status": 200,
+      "cors": "*",
+      "last_modified": "Sat, 26 Sep 2026 22:05:20 GMT",
+      "files": [
+        "agency.txt",
+        "calendar.txt",
+        "calendar_dates.txt",
+        "fare_attributes.txt",
+        "fare_rules.txt",
+        "feed_info.txt",
+        "routes.txt",
+        "shapes.txt",
+        "stops.txt",
+        "stop_times.txt",
+        "transfers.txt",
+        "translations.txt",
+        "trips.txt"
+      ],
+      "feed_info.txt": {
+        "rows": 1,
+        "sample": [
+          {
+            "feed_publisher_name": "とさでん交通株式会社",
+            "feed_publisher_url": "https://www.tosaden.co.jp/",
+            "feed_contact_url": "https://www.tosaden.co.jp/",
+            "feed_lang": "ja",
+            "default_lang": "ja-Latn",
+            "feed_start_date": "20260801",
+            "feed_end_date": "20270430",
+            "feed_version": "calendar_datesの訂正"
+          }
+        ]
+      },
+      "routes.txt": {
+        "rows": 4,
+        "sample": [
+          {
+            "route_id": "東西線上り_A",
+            "agency_id": "9490001007796_1",
+            "route_short_name": "",
+            "route_long_name": "とさでん路面電車",
+            "route_desc": "",
+            "route_type": "0",
+            "route_color": "00895D",
+            "route_text_color": "FFFFFF"
+          },
+          {
+            "route_id": "東西線下り_A",
+            "agency_id": "9490001007796_1",
+            "route_short_name": "",
+            "route_long_name": "とさでん路面電車",
+            "route_desc": "",
+            "route_type": "0",
+            "route_color": "00895D",
+            "route_text_color": "FFFFFF"
+          },
+          {
+            "route_id": "南北線下り_A",
+            "agency_id": "9490001007796_1",
+            "route_short_name": "",
+            "route_long_name": "とさでん路面電車",
+            "route_desc": "",
+            "route_type": "0",
+            "route_color": "00895D",
+            "route_text_color": "FFFFFF"
+          },
+          {
+            "route_id": "南北線上り_A",
+            "agency_id": "9490001007796_1",
+            "route_short_name": "",
+            "route_long_name": "とさでん路面電車",
+            "route_desc": "",
+            "route_type": "0",
+            "route_color": "00895D",
+            "route_text_color": "FFFFFF"
+          }
+        ]
+      },
+      "transfers.txt": {
+        "rows": 18,
+        "sample": [
+          {
+            "from_stop_id": "1015_02",
+            "to_stop_id": "1015_02",
+            "transfer_type": "0",
+            "min_transfer_time": ""
+          },
+          {
+            "from_stop_id": "1019_02",
+            "to_stop_id": "1019_02",
+            "transfer_type": "0",
+            "min_transfer_time": ""
+          }
+        ]
+      },
+      "calendar.txt": {
+        "rows": 2,
+        "sample": [
+          {
+            "service_id": "平日",
+            "monday": "1",
+            "tuesday": "1",
+            "wednesday": "1",
+            "thursday": "1",
+            "friday": "1",
+            "saturday": "0",
+            "sunday": "0",
+            "start_date": "20260801",
+            "end_date": "20270430"
+          },
+          {
+            "service_id": "土日祝",
+            "monday": "0",
+            "tuesday": "0",
+            "wednesday": "0",
+            "thursday": "0",
+            "friday": "0",
+            "saturday": "1",
+            "sunday": "1",
+            "start_date": "20260801",
+            "end_date": "20270430"
+          }
+        ]
+      }
+    },
+    {
+      "name": "tosaden-dated",
+      "url": "https://api-public.odpt.org/api/v4/files/odpt/TosadenTraffic/Streetcar.zip?date=20260801",
+      "checked": "2026-10-01",
+      "method": "GET",
+      "origin": "https://anemia111.github.io",
+      "status": 200,
+      "cors": "*",
+      "last_modified": "Sat, 26 Sep 2026 22:05:20 GMT",
+      "files": [
+        "agency.txt",
+        "calendar.txt",
+        "calendar_dates.txt",
+        "fare_attributes.txt",
+        "fare_rules.txt",
+        "feed_info.txt",
+        "routes.txt",
+        "shapes.txt",
+        "stops.txt",
+        "stop_times.txt",
+        "transfers.txt",
+        "translations.txt",
+        "trips.txt"
+      ],
+      "feed_info.txt": {
+        "rows": 1,
+        "sample": [
+          {
+            "feed_publisher_name": "とさでん交通株式会社",
+            "feed_publisher_url": "https://www.tosaden.co.jp/",
+            "feed_contact_url": "https://www.tosaden.co.jp/",
+            "feed_lang": "ja",
+            "default_lang": "ja-Latn",
+            "feed_start_date": "20260801",
+            "feed_end_date": "20270430",
+            "feed_version": "calendar_datesの訂正"
+          }
+        ]
+      },
+      "routes.txt": {
+        "rows": 4,
+        "sample": [
+          {
+            "route_id": "東西線上り_A",
+            "agency_id": "9490001007796_1",
+            "route_short_name": "",
+            "route_long_name": "とさでん路面電車",
+            "route_desc": "",
+            "route_type": "0",
+            "route_color": "00895D",
+            "route_text_color": "FFFFFF"
+          },
+          {
+            "route_id": "東西線下り_A",
+            "agency_id": "9490001007796_1",
+            "route_short_name": "",
+            "route_long_name": "とさでん路面電車",
+            "route_desc": "",
+            "route_type": "0",
+            "route_color": "00895D",
+            "route_text_color": "FFFFFF"
+          },
+          {
+            "route_id": "南北線下り_A",
+            "agency_id": "9490001007796_1",
+            "route_short_name": "",
+            "route_long_name": "とさでん路面電車",
+            "route_desc": "",
+            "route_type": "0",
+            "route_color": "00895D",
+            "route_text_color": "FFFFFF"
+          },
+          {
+            "route_id": "南北線上り_A",
+            "agency_id": "9490001007796_1",
+            "route_short_name": "",
+            "route_long_name": "とさでん路面電車",
+            "route_desc": "",
+            "route_type": "0",
+            "route_color": "00895D",
+            "route_text_color": "FFFFFF"
+          }
+        ]
+      },
+      "transfers.txt": {
+        "rows": 18,
+        "sample": [
+          {
+            "from_stop_id": "1015_02",
+            "to_stop_id": "1015_02",
+            "transfer_type": "0",
+            "min_transfer_time": ""
+          },
+          {
+            "from_stop_id": "1019_02",
+            "to_stop_id": "1019_02",
+            "transfer_type": "0",
+            "min_transfer_time": ""
+          }
+        ]
+      },
+      "calendar.txt": {
+        "rows": 2,
+        "sample": [
+          {
+            "service_id": "平日",
+            "monday": "1",
+            "tuesday": "1",
+            "wednesday": "1",
+            "thursday": "1",
+            "friday": "1",
+            "saturday": "0",
+            "sunday": "0",
+            "start_date": "20260801",
+            "end_date": "20270430"
+          },
+          {
+            "service_id": "土日祝",
+            "monday": "0",
+            "tuesday": "0",
+            "wednesday": "0",
+            "thursday": "0",
+            "friday": "0",
+            "saturday": "1",
+            "sunday": "1",
+            "start_date": "20260801",
+            "end_date": "20270430"
+          }
+        ]
+      }
+    },
+    {
+      "name": "akechi",
+      "url": "https://api.gtfs-data.jp/v2/organizations/aketetsu/feeds/akechirailway/files/feed.zip",
+      "checked": "2026-10-01",
+      "method": "GET",
+      "origin": "https://anemia111.github.io",
+      "status": 200,
+      "cors": "*",
+      "last_modified": "Sun, 01 Mar 2026 12:29:27 GMT",
+      "files": [
+        "agency.txt",
+        "calendar.txt",
+        "calendar_dates.txt",
+        "fare_attributes.txt",
+        "fare_rules.txt",
+        "feed_info.txt",
+        "routes.txt",
+        "stop_times.txt",
+        "stops.txt",
+        "transfers.txt",
+        "translations.txt",
+        "trips.txt"
+      ],
+      "feed_info.txt": {
+        "rows": 1,
+        "sample": [
+          {
+            "feed_publisher_name": "明知鉄道株式会社",
+            "feed_publisher_url": "https://www.aketetsu.co.jp/",
+            "feed_lang": "ja",
+            "feed_start_date": "20260314",
+            "feed_end_date": "20270331",
+            "feed_version": "2026/03/14改正-見える化ver2.6e"
+          }
+        ]
+      },
+      "routes.txt": {
+        "rows": 3,
+        "sample": [
+          {
+            "route_id": "1",
+            "agency_id": "6200001024022",
+            "route_short_name": "各停",
+            "route_long_name": "明知鉄道",
+            "route_desc": "",
+            "route_type": "2",
+            "route_color": "",
+            "route_text_color": ""
+          },
+          {
+            "route_id": "1C",
+            "agency_id": "6200001024022",
+            "route_short_name": "急行",
+            "route_long_name": "急行7009D　大正ロマン1号",
+            "route_desc": "",
+            "route_type": "2",
+            "route_color": "",
+            "route_text_color": ""
+          },
+          {
+            "route_id": "1D",
+            "agency_id": "6200001024022",
+            "route_short_name": "急行",
+            "route_long_name": "急行7010D　大正ロマン2号",
+            "route_desc": "",
+            "route_type": "2",
+            "route_color": "",
+            "route_text_color": ""
+          }
+        ]
+      },
+      "transfers.txt": {
+        "rows": 0,
+        "sample": []
+      },
+      "calendar.txt": {
+        "rows": 2,
+        "sample": [
+          {
+            "service_id": "全日",
+            "monday": "1",
+            "tuesday": "1",
+            "wednesday": "1",
+            "thursday": "1",
+            "friday": "1",
+            "saturday": "1",
+            "sunday": "1",
+            "start_date": "20260314",
+            "end_date": "20270331"
+          },
+          {
+            "service_id": "全日（月以外）",
+            "monday": "0",
+            "tuesday": "1",
+            "wednesday": "1",
+            "thursday": "1",
+            "friday": "1",
+            "saturday": "1",
+            "sunday": "1",
+            "start_date": "20260314",
+            "end_date": "20270331"
+          }
+        ]
+      }
+    },
+    {
+      "url": "https://api-public.odpt.org/api/v4/files/Toei/data/Toei-Train-GTFS.zip",
+      "status": 200,
+      "cors": "*",
+      "last_modified": "Thu, 24 Sep 2026 05:02:53 GMT",
+      "files": [
+        "agency.txt",
+        "calendar.txt",
+        "calendar_dates.txt",
+        "fare_attributes.txt",
+        "fare_rules.txt",
+        "feed_info.txt",
+        "routes.txt",
+        "stop_times.txt",
+        "stops.txt",
+        "translations.txt",
+        "trips.txt"
+      ],
+      "checked": "2026-10-01",
+      "feed_info.txt": {
+        "count": 1,
+        "sample": [
+          {
+            "feed_publisher_name": "東京都交通局",
+            "feed_publisher_url": "https://www.kotsu.metro.tokyo.jp/",
+            "feed_lang": "ja",
+            "feed_start_date": "20260314",
+            "feed_end_date": "20270312",
+            "feed_version": "20260921",
+            "feed_contact_email": "",
+            "feed_contact_url": ""
+          }
+        ]
+      },
+      "routes.txt": {
+        "count": 6,
+        "sample": [
+          {
+            "route_id": "1",
+            "agency_id": "toei",
+            "route_short_name": "",
+            "route_long_name": "浅草線",
+            "route_desc": "",
+            "route_type": "1",
+            "route_url": "",
+            "route_color": "FF535F",
+            "route_text_color": ""
+          },
+          {
+            "route_id": "2",
+            "agency_id": "toei",
+            "route_short_name": "",
+            "route_long_name": "三田線",
+            "route_desc": "",
+            "route_type": "1",
+            "route_url": "",
+            "route_color": "0067B0",
+            "route_text_color": ""
+          },
+          {
+            "route_id": "3",
+            "agency_id": "toei",
+            "route_short_name": "",
+            "route_long_name": "新宿線",
+            "route_desc": "",
+            "route_type": "1",
+            "route_url": "",
+            "route_color": "9FB01C",
+            "route_text_color": ""
+          },
+          {
+            "route_id": "4",
+            "agency_id": "toei",
+            "route_short_name": "",
+            "route_long_name": "大江戸線",
+            "route_desc": "",
+            "route_type": "1",
+            "route_url": "",
+            "route_color": "CF3366",
+            "route_text_color": ""
+          },
+          {
+            "route_id": "5",
+            "agency_id": "toei",
+            "route_short_name": "",
+            "route_long_name": "日暮里・舎人ライナー",
+            "route_desc": "",
+            "route_type": "2",
+            "route_url": "",
+            "route_color": "",
+            "route_text_color": ""
+          },
+          {
+            "route_id": "6",
+            "agency_id": "toei",
+            "route_short_name": "",
+            "route_long_name": "東京さくらトラム（都電荒川線）",
+            "route_desc": "",
+            "route_type": "0",
+            "route_url": "",
+            "route_color": "",
+            "route_text_color": ""
+          }
+        ]
+      }
+    }
+  ]
+}

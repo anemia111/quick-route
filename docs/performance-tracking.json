@@ -1,0 +1,124 @@
+{
+  "date": "2026-10-01",
+  "environment": "Windows desktop Chromium; 320x640; local Vite preview; no throttling; 5 samples, medians; not iPhone",
+  "startup": {
+    "baseline": {
+      "coldButtonVisibleMs": 148.25049999999987,
+      "warmButtonVisibleMs": 34.50420000000031,
+      "fcpMs": 140,
+      "resourceTransferBytesFirstSecond": 73780,
+      "samples": {
+        "cold": [
+          151.73850000000004,
+          148.25049999999987,
+          137.17759999999998,
+          135.72379999999976,
+          149.24039999999968
+        ],
+        "warm": [
+          36.66769999999997,
+          33.95559999999978,
+          36.86999999999989,
+          31.556300000000192,
+          34.50420000000031
+        ]
+      }
+    },
+    "next": {
+      "coldButtonVisibleMs": 144.54730000000018,
+      "warmButtonVisibleMs": 76.10359999999855,
+      "fcpMs": 136,
+      "resourceTransferBytesFirstSecond": 521174,
+      "samples": {
+        "cold": [
+          144.54730000000018,
+          135.05019999999877,
+          138.9404999999988,
+          151.55119999999988,
+          255.72030000000086
+        ],
+        "warm": [
+          33.262800000000425,
+          32.6908999999996,
+          88.0085999999992,
+          76.10359999999855,
+          115.9346000000005
+        ]
+      }
+    }
+  },
+  "routing": {
+    "roundTripMs": [
+      119.19999998807907,
+      81.80000001192093,
+      72.5,
+      68.19999998807907,
+      62
+    ],
+    "workerComputeMs": [
+      51.10000002384186,
+      29.799999952316284,
+      25.100000023841858,
+      18.099999964237213,
+      17.5
+    ],
+    "candidates": 8,
+    "packages": 6,
+    "trips": 5600
+  },
+  "stationInputIncludingDebounceMs": 208.09579999999914,
+  "idle": {
+    "seconds": 5,
+    "mainThreadTaskSeconds": 0.004585,
+    "jsHeapUsedBytes": 65138288
+  },
+  "foregroundTracking": {
+    "seconds": 65,
+    "mainThreadTaskSeconds": 0.04410599999999998,
+    "jsHeapUsedBytes": 49940976,
+    "realtimeFetchAttempts": 1,
+    "conditions": "GPS off, station unconfirmed, realtime request intentionally failed; no battery measurement"
+  },
+  "assets": [
+    {
+      "file": "index-DVn-0q9J.js",
+      "bytes": 245869,
+      "gzipBytes": 77473
+    },
+    {
+      "file": "JourneyPanel-dg4sL3mc.js",
+      "bytes": 9138,
+      "gzipBytes": 3735
+    },
+    {
+      "file": "planner-WJ0Cc39t.js",
+      "bytes": 1299,
+      "gzipBytes": 671
+    },
+    {
+      "file": "realtime-B-oVhAZ_.js",
+      "bytes": 119515,
+      "gzipBytes": 33164
+    },
+    {
+      "file": "rolldown-runtime-BpQH8Ho1.js",
+      "bytes": 227,
+      "gzipBytes": 194
+    },
+    {
+      "file": "router-BbRI82Rl.js",
+      "bytes": 5046,
+      "gzipBytes": 2309
+    },
+    {
+      "file": "router.worker-Bmy30QXu.js",
+      "bytes": 8412,
+      "gzipBytes": 3584
+    }
+  ],
+  "data": {
+    "stationBytes": 1309704,
+    "timetableBytes": 4464442,
+    "stations": 10154
+  }
+}
