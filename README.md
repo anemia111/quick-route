@@ -65,4 +65,4 @@ PRの `check.yml` は型チェック・40件の単体／結合テスト・Lint�
 - [Quick Route Nextの検証と性能](docs/NEXT-VERIFICATION.md)
 - [以前の公開版の検証記録](VERIFICATION.md)
 
-iPhone実機でのSafari／ホーム画面、保存消失・OS更新、位置精度、背景遷移、電池消費、実移動の確認は未実施です。Windows上のWebKitはiPhone実機ではありません。同環境のオフラインナビゲーションは内部エラーのため検証できず、表示中のオフライン計算を別に検証しています。ChromiumではSW経由のオフライン再読み込みを確認しました。
+iPhone実機でのSafari／ホーム画面、保存消失・OS更新、位置精度、背景遷移、電池消費、実移動の確認は未実施です。Windows／Linux上のWebKitはiPhone実機ではありません。Playwright WebKitのオフラインナビゲーションは両環境で内部エラーのため検証できず、表示中のオフライン計算を別に検証しています。ChromiumではSW経由のオフライン再読み込みを確認しました。

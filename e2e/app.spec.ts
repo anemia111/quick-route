@@ -88,13 +88,13 @@ test("real packages are saved and usable offline", async ({
     page.getByRole("button", { name: "最寄り → 目的地 馬込へ", exact: true }),
   ).toBeVisible();
   await context.setOffline(true);
-  if (testInfo.project.name === "chromium" || process.platform !== "win32")
+  if (testInfo.project.name === "chromium")
     await page.reload();
   else
     testInfo.annotations.push({
       type: "limitation",
       description:
-        "Windows Playwright WebKit offline navigation encountered an internal error; checks offline IDB use without reloading. iPhone offline restart remains unverified.",
+        "Playwright WebKit offline navigation encountered an internal error on Windows and Linux; checks offline IDB use without reloading. iPhone offline restart remains unverified.",
     });
   await expect(
     page.getByRole("button", { name: "最寄り → 目的地 馬込へ", exact: true }),
