@@ -21,8 +21,8 @@ it("validates, saves, reloads, edits and swaps stations", async () => {
   });
   view.unmount();
   render(<App />);
-  expect(screen.getByRole("button", { name: /目的地へ/ })).toBeVisible();
-  expect(screen.getByRole("button", { name: /最寄りへ/ })).toBeVisible();
+  expect(screen.getByRole("button", { name: /新宿へ/ })).toBeVisible();
+  expect(screen.getByRole("button", { name: /東京へ/ })).toBeVisible();
   await user.click(screen.getByRole("button", { name: "設定を開く" }));
   await user.click(screen.getByRole("button", { name: /駅を入れ替え/ }));
   expect(screen.getByLabelText("最寄り駅")).toHaveValue("新宿");
