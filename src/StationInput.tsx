@@ -47,7 +47,7 @@ export default function StationInput({
       <input
         id={id}
         value={value}
-        placeholder={id === "nearby" ? "例：鎌取" : "例：水道橋"}
+        placeholder={id === "nearby" ? "例：東京" : "例：新宿"}
         autoComplete="off"
         maxLength={100}
         aria-describedby={error ? "form-error" : undefined}
