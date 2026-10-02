@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { loadCatalog } from "./rail/offline";
-import { nearbyStations, type NearbyStation } from "./rail/nearbyStations";
+import { nearbyStations } from "./rail/nearbyStations";
 import type { NationalStation } from "./rail/model";
 import { accuratePosition } from "./rail/accuratePosition";
 
@@ -14,12 +14,9 @@ export default function ReturnHome({
   onStation: (station: NationalStation) => void;
 }) {
   const [busy, setBusy] = useState(false);
-  const [candidates, setCandidates] = useState<NearbyStation[]>([]);
   const [message, setMessage] = useState("");
   const request = useRef(0);
   const controller = useRef<AbortController | undefined>(undefined);
-  const detectedAt = useRef(0);
-  const [accuracy, setAccuracy] = useState(0);
   useEffect(
     () => () => {
       request.current++;
@@ -38,7 +35,6 @@ export default function ReturnHome({
         request.current++;
         controller.current?.abort();
         setBusy(false);
-        setCandidates([]);
       }
     };
     document.addEventListener("visibilitychange", visibility);
@@ -48,13 +44,11 @@ export default function ReturnHome({
     request.current++;
     controller.current?.abort();
     setBusy(false);
-    setCandidates([]);
     setMessage("");
   }
   async function locate() {
     if (busy || disabled) return;
     const id = ++request.current;
-    setCandidates([]);
     setMessage("");
     if (!navigator.geolocation) {
       setMessage("位置情報を利用できません。通常の駅検索を利用してください。");
@@ -83,20 +77,28 @@ export default function ReturnHome({
         position.coords.accuracy,
       );
       const stations = await loadCatalog();
-      if (request.current !== id) return;
+      if (request.current !== id || controller.current.signal.aborted) return;
       const matches = nearbyStations(
         stations,
         position.coords.latitude,
         position.coords.longitude,
         position.coords.accuracy,
       );
-      setCandidates(matches);
-      detectedAt.current = position.timestamp;
-      setAccuracy(position.coords.accuracy);
-      if (!matches.length)
+      if (!matches.length) {
         setMessage(
           "5km以内に駅候補が見つかりませんでした。通常の駅検索を利用してください。",
         );
+        return;
+      }
+      if (Math.abs(Date.now() - position.timestamp) > 60000)
+        throw Error(
+          "位置情報が古いため使用できません。もう一度試してください。",
+        );
+      const nearest = matches[0];
+      setMessage(
+        `${nearest.station.name}から${home}への経路を検索しています。位置の誤差は約${Math.ceil(position.coords.accuracy)}mです。`,
+      );
+      onStation(nearest.station);
     } catch (error) {
       if (request.current !== id) return;
       if (error instanceof DOMException && error.name === "AbortError") return;
@@ -128,7 +130,7 @@ export default function ReturnHome({
         <small>帰宅先：{home}</small>
       </button>
       <p className="location-help">
-        高精度GPSを最大15秒利用します。このアプリでは座標を保存・送信しません。
+        近い駅から到着が早い順で自動検索します。徒歩時間は未計算です。位置座標は保存・送信しません。
       </p>
       {busy && (
         <button className="cancel" onClick={cancel}>
@@ -139,47 +141,6 @@ export default function ReturnHome({
         <p className="muted" role="status">
           {message}
         </p>
-      )}
-      {!disabled && !!candidates.length && (
-        <section className="nearby-candidates" aria-label="近くの駅から帰る">
-          <p>
-            <strong>出発する駅を選んでください</strong>
-          </p>
-          <p className="muted">
-            位置の誤差は約{Math.ceil(accuracy)}mです。
-            距離は直線距離です。入口・徒歩時間・乗車できる列車は未確認です。選んだ駅から到着が早い順で検索します。
-          </p>
-          {candidates.map(({ station, metres }) => (
-            <button
-              key={station.id}
-              className="nearby-choice"
-              disabled={disabled}
-              onClick={() => {
-                if (Date.now() - detectedAt.current > 60000) {
-                  cancel();
-                  setMessage(
-                    "位置情報の検出から時間が経ちました。もう一度取得してください。",
-                  );
-                  return;
-                }
-                cancel();
-                onStation(station);
-              }}
-            >
-              <strong>{station.name}から帰る</strong>
-              <small>
-                約
-                {metres < 1000
-                  ? `${Math.max(10, Math.round(metres / 10) * 10)}m`
-                  : `${(metres / 1000).toFixed(1)}km`}{" "}
-                · {station.operators.join("・")} · {station.lines.join("・")}
-              </small>
-            </button>
-          ))}
-          <button className="cancel" onClick={cancel}>
-            閉じる
-          </button>
-        </section>
       )}
     </div>
   );
