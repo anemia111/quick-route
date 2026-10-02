@@ -1,4 +1,89 @@
 import { expect, test } from "@playwright/test";
+import { readFileSync } from "node:fs";
+test("location return searches from detected Shinjuku to registered Tokyo and preserves settings", async ({
+  page,
+  context,
+}, testInfo) => {
+  if (testInfo.project.name === "webkit") {
+    // Windows Playwright WebKit reports emulated timestamps in microseconds.
+    // Correct the emulator only; production continues rejecting invalid timestamps.
+    await page.addInitScript(() => {
+      const watch = navigator.geolocation.watchPosition.bind(
+        navigator.geolocation,
+      );
+      navigator.geolocation.watchPosition = (success, error, options) =>
+        watch(
+          (position) => {
+            const timestamp =
+              position.timestamp > Date.now() * 100
+                ? position.timestamp / 1000
+                : position.timestamp;
+            success({
+              coords: position.coords,
+              timestamp,
+            } as GeolocationPosition);
+          },
+          error,
+          options,
+        );
+    });
+    testInfo.annotations.push({
+      type: "emulation",
+      description:
+        "Corrects WebKit emulated timestamp units only; not an iPhone GPS test.",
+    });
+  }
+  const stations = JSON.parse(
+    readFileSync("public/data/stations-n02-2025.json", "utf8"),
+  );
+  const station = stations.find(
+    (s: { name: string; operators: string[] }) =>
+      s.name === "新宿" && s.operators.includes("東日本旅客鉄道"),
+  );
+  await context.grantPermissions(["geolocation"]);
+  await context.setGeolocation({
+    latitude: station.lat,
+    longitude: station.lon,
+    accuracy: 20,
+  });
+  await page.addInitScript(() =>
+    localStorage.setItem(
+      "quick-route.stations.v1",
+      JSON.stringify({ nearby: "東京", destination: "新宿" }),
+    ),
+  );
+  await page.goto("./");
+  let external = "";
+  await page.route("https://transit.yahoo.co.jp/**", (r) => {
+    external = r.request().url();
+    return r.fulfill({
+      contentType: "text/html",
+      body: "<h1>external test</h1>",
+    });
+  });
+  await page.getByRole("button", { name: /現在地から帰る/ }).click();
+  await context.setGeolocation({
+    latitude: station.lat + 0.000001,
+    longitude: station.lon,
+    accuracy: 20,
+  });
+  await expect(page.getByRole("button", { name: /^新宿から帰る/ })).toBeVisible(
+    { timeout: 20000 },
+  );
+  await expect(page.getByText(/入口・徒歩時間/)).toBeVisible();
+  expect(
+    await page.evaluate(() =>
+      JSON.parse(localStorage.getItem("quick-route.stations.v1")!),
+    ),
+  ).toEqual({ nearby: "東京", destination: "新宿" });
+  await page.getByRole("button", { name: /^新宿から帰る/ }).click();
+  await page.waitForURL("https://transit.yahoo.co.jp/**");
+  const params = new URL(external).searchParams;
+  expect(params.get("from")).toBe("新宿");
+  expect(params.get("to")).toBe("東京");
+  expect(params.get("s")).toBe("0");
+  expect(params.get("type")).toBe("1");
+});
 test("national suggestions, settings compatibility, dynamic labels, small screen and dark mode", async ({
   page,
 }) => {
@@ -88,8 +173,7 @@ test("real packages are saved and usable offline", async ({
     page.getByRole("button", { name: "最寄り → 目的地 馬込へ", exact: true }),
   ).toBeVisible();
   await context.setOffline(true);
-  if (testInfo.project.name === "chromium")
-    await page.reload();
+  if (testInfo.project.name === "chromium") await page.reload();
   else
     testInfo.annotations.push({
       type: "limitation",
