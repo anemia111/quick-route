@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { readFileSync } from "node:fs";
-test("location return searches from detected Shinjuku to registered Tokyo and preserves settings", async ({
+test("one tap detects Shinjuku and automatically searches to registered Tokyo", async ({
   page,
   context,
 }, testInfo) => {
@@ -67,17 +67,11 @@ test("location return searches from detected Shinjuku to registered Tokyo and pr
     longitude: station.lon,
     accuracy: 20,
   });
-  await expect(page.getByRole("button", { name: /^新宿から帰る/ })).toBeVisible(
-    { timeout: 20000 },
-  );
-  await expect(page.getByText(/入口・徒歩時間/)).toBeVisible();
-  expect(
-    await page.evaluate(() =>
-      JSON.parse(localStorage.getItem("quick-route.stations.v1")!),
-    ),
-  ).toEqual({ nearby: "東京", destination: "新宿" });
-  await page.getByRole("button", { name: /^新宿から帰る/ }).click();
-  await page.waitForURL("https://transit.yahoo.co.jp/**");
+  await page.waitForURL("https://transit.yahoo.co.jp/**", { timeout: 20000 });
+  const saved = (await context.storageState()).origins
+    .find((o) => o.origin === "http://127.0.0.1:4173")!
+    .localStorage.find((s) => s.name === "quick-route.stations.v1")!.value;
+  expect(JSON.parse(saved)).toEqual({ nearby: "東京", destination: "新宿" });
   const params = new URL(external).searchParams;
   expect(params.get("from")).toBe("新宿");
   expect(params.get("to")).toBe("東京");
