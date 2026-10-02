@@ -3,6 +3,7 @@ import { loadStations, saveStations, validateStations } from "./stations";
 import type { Stations } from "./stations";
 import { routeProvider } from "./routing";
 import StationInput from "./StationInput";
+import ReturnHome from "./ReturnHome";
 import {
   adaptOffline,
   loadCatalog,
@@ -109,27 +110,29 @@ export default function App() {
     if (!document.activeElement?.closest("form"))
       heading.current?.focus({ preventScroll: true });
   }, [editing]);
-  function externalSearch(reverse: boolean) {
+  function externalSearch(reverse: boolean, detected?: NationalStation) {
     if (!stations) return;
     window.location.assign(
       routeProvider.buildUrl({
-        from: reverse ? stations.destination : stations.nearby,
+        from:
+          detected?.name ?? (reverse ? stations.destination : stations.nearby),
         to: reverse ? stations.nearby : stations.destination,
         departure: new Date(),
       }),
     );
   }
-  async function search(reverse: boolean) {
+  async function search(reverse: boolean, detected?: NationalStation) {
     if (!stations || searching) return;
     const departure = Date.now();
     setSearching(true);
-    const from = reverse ? stations.destination : stations.nearby,
+    const from =
+        detected?.name ?? (reverse ? stations.destination : stations.nearby),
       to = reverse ? stations.nearby : stations.destination;
     void recordSearch(from, to).catch(() => {});
     try {
       const available = await usablePackages(departure);
       if (!available.length) {
-        if (navigator.onLine) externalSearch(reverse);
+        if (navigator.onLine) externalSearch(reverse, detected);
         else
           setNotice(
             "有効な保存済み時刻表がありません。通信復帰後にYahoo!検索を利用できます。",
@@ -140,7 +143,8 @@ export default function App() {
       const a = resolveStation(
           rows,
           from,
-          reverse ? stations.destinationId : stations.nearbyId,
+          detected?.id ??
+            (reverse ? stations.destinationId : stations.nearbyId),
         ),
         b = resolveStation(
           rows,
@@ -148,7 +152,7 @@ export default function App() {
           reverse ? stations.nearbyId : stations.destinationId,
         );
       if (!a || !b) {
-        if (navigator.onLine) externalSearch(reverse);
+        if (navigator.onLine) externalSearch(reverse, detected);
         else
           setNotice(
             "駅の照合に必要な情報が不足しています。駅候補を選び直すか、通信復帰後に外部検索を利用してください。",
@@ -175,7 +179,7 @@ export default function App() {
         realtime,
       });
       if (!planned.journeys.length) {
-        if (navigator.onLine) externalSearch(reverse);
+        if (navigator.onLine) externalSearch(reverse, detected);
         else setNotice(planned.reason ?? "この区間の独自計算は未対応です。");
         return;
       }
@@ -186,16 +190,14 @@ export default function App() {
       for (const leg of planned.journeys[0].legs)
         void touchPackage(leg.packageId).catch(() => {});
     } catch {
-      if (navigator.onLine) externalSearch(reverse);
+      if (navigator.onLine) externalSearch(reverse, detected);
       else
         setNotice(
           "データを読み込めませんでした。通信復帰後に外部検索を利用できます。",
         );
     } finally {
       setSearching(false);
-      void adaptOffline([stations.nearby, stations.destination]).catch(
-        () => {},
-      );
+      void adaptOffline([from, to]).catch(() => {});
     }
   }
   function save(event: React.FormEvent) {
@@ -431,6 +433,11 @@ export default function App() {
                 </span>
               </button>
             </div>
+            <ReturnHome
+              home={stations!.nearby}
+              disabled={searching || tracking}
+              onStation={(station) => void search(true, station)}
+            />
             {!online && (
               <p className="error" role="status">
                 オフラインです。有効な保存済み時刻表がある区間のみ独自検索できます。Yahoo!検索には通信が必要です。
