@@ -4,6 +4,7 @@ import type { Stations } from "./stations";
 import { routeProvider } from "./routing";
 import StationInput from "./StationInput";
 import ReturnHome from "./ReturnHome";
+import AppUpdate from "./AppUpdate";
 import {
   adaptOffline,
   loadCatalog,
@@ -512,6 +513,7 @@ export default function App() {
             へお知らせください。
           </p>
         </details>
+        <AppUpdate busy={editing || searching || tracking} />
       </footer>
     </div>
   );

@@ -1,10 +1,19 @@
 import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
+import { execFileSync } from "node:child_process";
+const commit = process.env.GITHUB_SHA || execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();
 export default defineConfig({
   base: "/quick-route/",
+  define: { __BUILD_COMMIT__: JSON.stringify(commit) },
   plugins: [
     react(),
+    {
+      name: "quick-route-build-info",
+      generateBundle() {
+        this.emitFile({ type: "asset", fileName: "build-info.json", source: JSON.stringify({ app: "quick-route", commit }) });
+      },
+    },
     VitePWA({
       registerType: "autoUpdate",
       includeAssets: ["apple-touch-icon.png", "icon.svg"],

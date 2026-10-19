@@ -1,5 +1,31 @@
 import { expect, test } from "@playwright/test";
 import { readFileSync } from "node:fs";
+
+test("PWA update offers a safe reload, preserves settings and stays in Quick Route scope", async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem("quick-route.stations.v1", JSON.stringify({ nearby: "東京", destination: "新宿" })));
+  await page.goto("./");
+  await page.evaluate(async () => {
+    await navigator.serviceWorker.ready;
+    if (!navigator.serviceWorker.controller)
+      await new Promise<void>((resolve) => navigator.serviceWorker.addEventListener("controllerchange", () => resolve(), { once: true }));
+  });
+  const registration = await page.evaluate(async () => {
+    const reg = await navigator.serviceWorker.getRegistration(location.href);
+    return { scope: reg?.scope, script: reg?.active?.scriptURL };
+  });
+  expect(registration.scope).toBe("http://127.0.0.1:4173/quick-route/");
+  expect(registration.script).toBe("http://127.0.0.1:4173/quick-route/sw.js");
+  // Changing the worker script URL simulates a new deployment without changing
+  // any other origin's registrations or clearing saved application data.
+  await page.evaluate(() => navigator.serviceWorker.register("/quick-route/sw.js?upgrade-test=1", { scope: "/quick-route/" }));
+  await expect(page.getByRole("button", { name: "最新版を表示" })).toBeVisible({ timeout: 30000 });
+  await page.getByRole("button", { name: "設定を開く" }).click();
+  await expect(page.getByRole("button", { name: "最新版を表示" })).toBeDisabled();
+  await page.getByRole("button", { name: "キャンセル", exact: true }).click();
+  await page.getByRole("button", { name: "最新版を表示" }).click();
+  await expect(page.getByRole("button", { name: /現在地から帰る/ })).toBeVisible();
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem("quick-route.stations.v1")!))).toEqual({ nearby: "東京", destination: "新宿" });
+});
 test("one tap detects Shinjuku and automatically searches to registered Tokyo", async ({
   page,
   context,

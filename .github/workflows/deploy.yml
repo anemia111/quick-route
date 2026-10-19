@@ -25,6 +25,8 @@ jobs:
       - run: npm test
       - run: npm run lint
       - run: npm run build
+      - run: npx playwright install --with-deps chromium webkit
+      - run: npm run test:e2e
       - uses: actions/upload-pages-artifact@v5
         with:
           path: dist

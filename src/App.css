@@ -436,6 +436,15 @@ input::placeholder {
 .return-home {
   margin-top: 16px;
 }
+.app-update button {
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--panel);
+  color: inherit;
+}
+.app-update button:disabled { opacity: .5; }
 .location-button {
   width: 100%;
   min-height: 64px;
