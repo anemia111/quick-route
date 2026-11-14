@@ -124,8 +124,9 @@ test("national suggestions, settings compatibility, dynamic labels, small screen
   await page.getByRole("button", { name: "保存してはじめる" }).click();
   await expect(page.getByRole("button", { name: /水道橋へ/ })).toBeVisible();
   await page.reload();
-  await expect(page.getByRole("button", { name: /鎌取へ/ })).toBeVisible();
+  await expect(page.getByRole("button", { name: "目的地 → 最寄り 鎌取へ" })).toBeVisible();
   await page.emulateMedia({ colorScheme: "dark" });
+  await expect(page.getByRole("button", { name: "現在地から帰る 鎌取へ" })).toBeVisible();
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= window.innerWidth,

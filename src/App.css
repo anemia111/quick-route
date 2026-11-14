@@ -235,7 +235,8 @@ h1 {
   text-align: left;
   box-shadow: 0 6px 14px #193d2910;
 }
-.route-button + .route-button {
+.route-button + .route-button,
+.return-home {
   margin-top: 14px;
 }
 .outbound {
@@ -243,6 +244,9 @@ h1 {
 }
 .inbound {
   background: #13805f;
+}
+.location-button {
+  background: #5b4da4;
 }
 .button-caption {
   display: block;
@@ -482,12 +486,10 @@ input::placeholder {
   .route-button { min-height: 88px; padding: 16px 20px; }
   .button-title { font-size: 24px; }
   .button-caption { margin-bottom: 4px; }
-  .route-button + .route-button { margin-top: 12px; }
+  .route-button + .route-button,
+  .return-home { margin-top: 12px; }
 }
 
-.return-home {
-  margin-top: 16px;
-}
 .app-update button {
   min-height: 44px;
   margin-top: 10px;
@@ -498,26 +500,3 @@ input::placeholder {
   color: inherit;
 }
 .app-update button:disabled { opacity: .5; }
-.location-button {
-  width: 100%;
-  min-height: 64px;
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  background: var(--panel);
-  color: inherit;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding: 14px 18px;
-  font-size: 16px;
-  font-weight: 700;
-}
-.location-button small {
-  width: 100%;
-  text-align: left;
-  font-size: 12px;
-  font-weight: 400;
-  color: var(--muted);
-  overflow-wrap: anywhere;
-}

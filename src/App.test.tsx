@@ -28,7 +28,8 @@ it("validates, saves, reloads, edits and swaps stations", async () => {
   view.unmount();
   render(<App />);
   expect(screen.getByRole("button", { name: /新宿へ/ })).toBeVisible();
-  expect(screen.getByRole("button", { name: /東京へ/ })).toBeVisible();
+  expect(screen.getByRole("button", { name: /目的地 → 最寄り\s*東京へ/ })).toBeVisible();
+  expect(screen.getByRole("button", { name: /現在地から帰る\s*東京へ/ })).toBeVisible();
   await user.click(screen.getByRole("button", { name: "設定を開く" }));
   expect(shinkansen()).not.toBeChecked();
   await user.click(screen.getByRole("button", { name: /駅を入れ替え/ }));

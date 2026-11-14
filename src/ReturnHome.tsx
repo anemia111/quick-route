@@ -3,6 +3,7 @@ import { loadCatalog } from "./rail/offline";
 import { nearbyStations } from "./rail/nearbyStations";
 import type { NationalStation } from "./rail/model";
 import { accuratePosition } from "./rail/accuratePosition";
+import Arrow from "./Arrow";
 
 export default function ReturnHome({
   home,
@@ -121,13 +122,20 @@ export default function ReturnHome({
   return (
     <div className="return-home">
       <button
-        className="location-button"
+        className="route-button location-button"
+        type="button"
         disabled={busy || disabled}
         onClick={() => void locate()}
       >
-        <span aria-hidden="true">◎</span>
-        {busy ? "近くの駅を探しています…" : "現在地から帰る"}
-        <small>帰宅先：{home}</small>
+        <span>
+          <span className="button-caption">
+            {busy ? "近くの駅を探しています…" : "現在地から帰る"}
+          </span>
+          <span className="button-title">{home}へ</span>
+        </span>
+        <span className="arrow-circle">
+          <Arrow />
+        </span>
       </button>
       {busy && (
         <button className="cancel" onClick={cancel}>
