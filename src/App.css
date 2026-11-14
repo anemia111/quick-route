@@ -118,7 +118,6 @@ h1 {
   margin: 0;
   font-weight: 750;
 }
-.home,
 .settings {
   padding-top: 52px;
 }
@@ -129,7 +128,7 @@ h1 {
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 20px;
-  margin: 30px 0 36px;
+  margin: 28px 0 20px;
   padding: 23px 20px;
   gap: 10px;
 }
@@ -286,23 +285,12 @@ footer details { text-align: left; margin-top: 12px; line-height: 1.8; }
 footer summary { min-height: 44px; text-align: center; cursor: pointer; }
 footer a { color: inherit; }
 button:disabled { opacity: .65; cursor: default; }
-.search-note {
-  font-size: 11px;
-  line-height: 1.9;
-  color: var(--muted);
-  text-align: center;
-  margin: 24px 0;
-}
 footer {
   font-size: 10px;
   color: var(--muted);
   text-align: center;
   margin-top: 30px;
   letter-spacing: 0.5px;
-}
-.footer-mark {
-  font-size: 16px;
-  margin-right: 4px;
 }
 .intro {
   font-size: 13px;
@@ -456,12 +444,11 @@ input::placeholder {
   }
 }
 @media (max-height: 730px) {
-  .home,
   .settings {
     padding-top: 30px;
   }
   .route {
-    margin: 22px 0 25px;
+    margin: 22px 0 18px;
     padding: 18px;
   }
   .route-button {
@@ -470,9 +457,6 @@ input::placeholder {
   }
   footer {
     margin-top: 16px;
-  }
-  .search-note {
-    margin: 18px 0;
   }
 }
 @media (min-width: 700px) {
@@ -494,9 +478,6 @@ input::placeholder {
   }
 }
 @media (max-height: 640px) {
-  .home { padding-top: 20px; }
-  .home .eyebrow { display: none; }
-  .home h1 { font-size: 24px; line-height: 1.4; }
   .route { margin: 16px 0 20px; padding: 14px; }
   .route-button { min-height: 88px; padding: 16px 20px; }
   .button-title { font-size: 24px; }
@@ -509,6 +490,7 @@ input::placeholder {
 }
 .app-update button {
   min-height: 44px;
+  margin-top: 10px;
   padding: 8px 14px;
   border: 1px solid var(--line);
   border-radius: 12px;
@@ -538,10 +520,4 @@ input::placeholder {
   font-weight: 400;
   color: var(--muted);
   overflow-wrap: anywhere;
-}
-.location-help {
-  font-size: 11px;
-  line-height: 1.6;
-  color: var(--muted);
-  margin: 8px 4px 0;
 }

@@ -72,17 +72,16 @@ export default function App() {
   const destination = stations?.destination;
   useEffect(() => {
     if (nearby && destination)
-      void adaptOffline([nearby, destination]).then(
-        async (message) => {
+      void adaptOffline([nearby, destination])
+        .then(async () => {
           if ((await usablePackages()).length)
             await Promise.all([
               import("./rail/planner"),
               import("./rail/router"),
               import("./JourneyPanel"),
-            ]).catch(() => {});
-          setNotice(message);
-        },
-      );
+            ]);
+        })
+        .catch(() => {});
   }, [nearby, destination]);
   useEffect(() => {
     let alive = true;
@@ -140,6 +139,7 @@ export default function App() {
     if (!stations || searching) return;
     const departure = Date.now();
     setSearching(true);
+    setNotice("");
     const from =
         detected?.name ?? (reverse ? stations.destination : stations.nearby),
       to = reverse ? stations.nearby : stations.destination;
@@ -236,7 +236,7 @@ export default function App() {
       setDraft(cleaned);
       setError("");
       setEditing(false);
-      setNotice("設定を保存しました");
+      setNotice("");
       void requestPersistence();
     } catch {
       setError(
@@ -418,11 +418,8 @@ export default function App() {
           </section>
         ) : (
           <section className="home">
-            <div className="eyebrow">YOUR DAILY SHORTCUT</div>
-            <h1 ref={heading} tabIndex={-1}>
-              いつもの移動を、
-              <br />
-              もっとスムーズに。
+            <h1 className="sr-only" ref={heading} tabIndex={-1}>
+              経路検索
             </h1>
             <div
               className="route"
@@ -518,14 +515,13 @@ export default function App() {
                 オフラインです。有効な保存済み時刻表がある区間のみ独自検索できます。Yahoo!検索には通信が必要です。
               </p>
             )}
-            <p className="search-note">
-              現在時刻・到着が早い順で検索。
-              <br />
-              データ不足の区間はYahoo!乗換案内を開きます。
-            </p>
-            <p className="muted" role="status">
-              {searching ? "経路を確認しています…" : notice}
-            </p>
+            <div role="status">
+              {(searching || notice) && (
+                <p className="muted">
+                  {searching ? "経路を確認しています…" : notice}
+                </p>
+              )}
+            </div>
             {result && (
               <Suspense
                 fallback={<p role="status">経路候補を読み込んでいます…</p>}
@@ -558,37 +554,42 @@ export default function App() {
         )}
       </main>
       <footer>
-        <span className="footer-mark">↗</span> いつものルート、ワンタップ。
-        <details>
-          <summary>データ・対応範囲</summary>
-          <p>
-            全国駅：国土交通省 国土数値情報
-            N02（2025年末基準）。時刻表：東京都交通局・公共交通オープンデータ協議会、CC
-            BY
-            4.0、加工あり。都営6路線の列車を収録。乗換時間未収録の接続は独自計算しません。
-          </p>
-          <p>
-            <a href="https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N02-2025.html">
-              全国駅の提供元
-            </a>{" "}
-            / <a href="https://ckan.odpt.org/dataset/train-toei">都営時刻表</a>{" "}
-            /{" "}
-            <a href="https://creativecommons.org/licenses/by/4.0/deed.ja">
-              ライセンス
-            </a>
-            {" / "}
-            <a href={import.meta.env.BASE_URL + "licenses.txt"}>
-              ソフトウェアのライセンス
-            </a>
-          </p>
-          <p>
-            運行情報は公式発着予測を取得できた列車のみ反映。取得失敗・期限切れを正常運行と判断しません。履歴・設定・位置情報は端末内で処理します。外部検索時は駅名・日時・検索条件をYahoo!へ送信します。データに誤りがある場合はアプリの
-            <a href="https://github.com/anemia111/quick-route/issues">
-              問い合わせ先
-            </a>
-            へお知らせください。
-          </p>
-        </details>
+        {editing && (
+          <details>
+            <summary>データ・対応範囲</summary>
+            <p>
+              現在時刻から到着が早い順に検索し、データ不足の区間はYahoo!乗換案内を開きます。
+              「現在地から帰る」は近い駅から検索します。徒歩時間は未計算です。位置座標は保存・送信しません。
+            </p>
+            <p>
+              全国駅：国土交通省 国土数値情報
+              N02（2025年末基準）。時刻表：東京都交通局・公共交通オープンデータ協議会、CC
+              BY
+              4.0、加工あり。都営6路線の列車を収録。乗換時間未収録の接続は独自計算しません。
+            </p>
+            <p>
+              <a href="https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N02-2025.html">
+                全国駅の提供元
+              </a>{" "}
+              / <a href="https://ckan.odpt.org/dataset/train-toei">都営時刻表</a>{" "}
+              /{" "}
+              <a href="https://creativecommons.org/licenses/by/4.0/deed.ja">
+                ライセンス
+              </a>
+              {" / "}
+              <a href={import.meta.env.BASE_URL + "licenses.txt"}>
+                ソフトウェアのライセンス
+              </a>
+            </p>
+            <p>
+              運行情報は公式発着予測を取得できた列車のみ反映。取得失敗・期限切れを正常運行と判断しません。履歴・設定・位置情報は端末内で処理します。外部検索時は駅名・日時・検索条件をYahoo!へ送信します。データに誤りがある場合はアプリの
+              <a href="https://github.com/anemia111/quick-route/issues">
+                問い合わせ先
+              </a>
+              へお知らせください。
+            </p>
+          </details>
+        )}
         <AppUpdate busy={editing || searching || tracking} />
       </footer>
     </div>

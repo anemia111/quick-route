@@ -5,7 +5,6 @@ import { execFileSync } from "node:child_process";
 const commit = process.env.GITHUB_SHA || execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();
 export default defineConfig({
   base: "/quick-route/",
-  define: { __BUILD_COMMIT__: JSON.stringify(commit) },
   plugins: [
     react(),
     {
