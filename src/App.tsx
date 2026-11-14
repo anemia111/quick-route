@@ -46,7 +46,7 @@ export default function App() {
   const [stations, setStations] = useState<Stations | null>(initial.stations);
   const [editing, setEditing] = useState(!initial.stations);
   const [draft, setDraft] = useState<Stations>(
-    initial.stations ?? { nearby: "", destination: "" },
+    initial.stations ?? { nearby: "", destination: "", usePaidTrains: true },
   );
   const [error, setError] = useState(initial.error);
   const [notice, setNotice] = useState("");
@@ -119,6 +119,7 @@ export default function App() {
           detected?.name ?? (reverse ? stations.destination : stations.nearby),
         to: reverse ? stations.nearby : stations.destination,
         departure: new Date(),
+        usePaidTrains: stations.usePaidTrains,
       }),
     );
   }
@@ -206,6 +207,7 @@ export default function App() {
     const cleaned = {
       nearby: draft.nearby.trim(),
       destination: draft.destination.trim(),
+      usePaidTrains: draft.usePaidTrains,
       ...(draft.nearbyId ? { nearbyId: draft.nearbyId } : {}),
       ...(draft.destinationId ? { destinationId: draft.destinationId } : {}),
     };
@@ -220,7 +222,7 @@ export default function App() {
       setDraft(cleaned);
       setError("");
       setEditing(false);
-      setNotice("駅を保存しました");
+      setNotice("設定を保存しました");
       void requestPersistence();
     } catch {
       setError(
@@ -310,6 +312,7 @@ export default function App() {
                     type="button"
                     onClick={() => {
                       setDraft({
+                        ...draft,
                         nearby: draft.destination,
                         destination: draft.nearby,
                         nearbyId: draft.destinationId,
@@ -346,6 +349,20 @@ export default function App() {
                   }
                 />
               </div>
+              <label className="paid-trains">
+                <input
+                  type="checkbox"
+                  checked={draft.usePaidTrains}
+                  aria-describedby="paid-trains-description"
+                  onChange={(event) =>
+                    setDraft({ ...draft, usePaidTrains: event.target.checked })
+                  }
+                />
+                有料列車を利用する
+              </label>
+              <p id="paid-trains-description" className="paid-trains-description">
+                Yahoo!乗換案内の検索で、オフにすると新幹線と有料特急を除外します。
+              </p>
               {error && (
                 <p id="form-error" className="error" role="alert">
                   {error}
@@ -368,7 +385,7 @@ export default function App() {
                 </button>
               )}
             </form>
-            <p className="privacy">駅の設定は、このブラウザに保存されます。</p>
+            <p className="privacy">設定は、このブラウザに保存されます。</p>
           </section>
         ) : (
           <section className="home">
@@ -471,6 +488,7 @@ export default function App() {
                         from,
                         to,
                         departure: new Date(),
+                        usePaidTrains: stations!.usePaidTrains,
                       }),
                     )
                   }
@@ -506,7 +524,7 @@ export default function App() {
             </a>
           </p>
           <p>
-            運行情報は公式発着予測を取得できた列車のみ反映。取得失敗・期限切れを正常運行と判断しません。履歴・設定・位置情報は端末内で処理します。外部検索時は駅名と日時をYahoo!へ送信します。データに誤りがある場合はアプリの
+            運行情報は公式発着予測を取得できた列車のみ反映。取得失敗・期限切れを正常運行と判断しません。履歴・設定・位置情報は端末内で処理します。外部検索時は駅名・日時・検索条件をYahoo!へ送信します。データに誤りがある場合はアプリの
             <a href="https://github.com/anemia111/quick-route/issues">
               問い合わせ先
             </a>

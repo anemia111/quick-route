@@ -150,6 +150,7 @@ test("missing national data retains manual input and Yahoo departure/arrival ord
   await page.goto("./");
   await page.getByLabel("最寄り駅", { exact: true }).fill("鎌取");
   await page.getByLabel("目的地駅", { exact: true }).fill("水道橋");
+  await page.getByRole("checkbox", { name: "有料列車を利用する" }).uncheck();
   await page.getByRole("button", { name: "保存してはじめる" }).click();
   let external = "";
   await page.route("https://transit.yahoo.co.jp/**", (r) => {
@@ -166,6 +167,8 @@ test("missing national data retains manual input and Yahoo departure/arrival ord
   expect(params.get("to")).toBe("水道橋");
   expect(params.get("s")).toBe("0");
   expect(params.get("type")).toBe("1");
+  expect(params.get("shin")).toBe("0");
+  expect(params.get("ex")).toBe("0");
 });
 test("real packages are saved and usable offline", async ({
   page,

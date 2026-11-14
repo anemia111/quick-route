@@ -315,6 +315,30 @@ input::placeholder {
 .swap span {
   font-size: 11px;
 }
+.paid-trains {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 650;
+  cursor: pointer;
+}
+.paid-trains input {
+  width: 20px;
+  height: 20px;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+  flex-shrink: 0;
+}
+.paid-trains-description {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted);
+}
 .save {
   width: 100%;
   background: #203f36;
