@@ -166,6 +166,14 @@ h1 {
   color: #95a59e;
   text-align: center;
 }
+.search-options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 10px;
+  margin-bottom: 8px;
+}
 .departure {
   display: flex;
   align-items: center;
@@ -173,13 +181,47 @@ h1 {
   color: var(--muted);
   font-size: 12px;
   font-weight: 600;
-  margin: 0 0 14px 3px;
+  margin: 0 0 0 3px;
 }
 .departure span {
   width: 6px;
   height: 6px;
   background: #24866a;
   border-radius: 50%;
+}
+.train-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-left: auto;
+}
+.train-toggles button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 44px;
+  padding: 0 9px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--panel);
+  color: inherit;
+  font-size: 12px;
+  font-weight: 650;
+}
+.train-toggles button span {
+  color: var(--muted);
+  font-size: 11px;
+}
+.train-toggles button[aria-pressed="true"] {
+  background: #d7f0e3;
+  border-color: #a9d4bd;
+  color: #153f30;
+}
+.train-toggles button[aria-pressed="true"] span {
+  color: inherit;
+}
+.train-toggles button:disabled {
+  opacity: 0.65;
 }
 .route-button {
   width: 100%;
@@ -315,12 +357,17 @@ input::placeholder {
 .swap span {
   font-size: 11px;
 }
+.train-settings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 16px;
+  margin-top: 12px;
+}
 .paid-trains {
   display: flex;
   align-items: center;
   gap: 10px;
   min-height: 44px;
-  margin-top: 12px;
   font-size: 14px;
   font-weight: 650;
   cursor: pointer;
@@ -385,12 +432,12 @@ input::placeholder {
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    background: #111a18;
-    color: #edf4f0;
-    --muted: #a1b1aa;
-    --panel: #1c2823;
-    --line: #2b3a32;
-    --input: #15201b;
+    background: #202e29;
+    color: #f3f9f5;
+    --muted: #bdcfc4;
+    --panel: #2a3b33;
+    --line: #465d51;
+    --input: #23342c;
   }
   .brand-icon,
   .save {
@@ -398,10 +445,10 @@ input::placeholder {
     color: #142b20;
   }
   .outbound {
-    background: #245dca;
+    background: #2965d1;
   }
   .inbound {
-    background: #126e53;
+    background: #13765a;
   }
   .error {
     background: #44271f;

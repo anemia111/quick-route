@@ -23,6 +23,11 @@ import type {
 const JourneyPanel = lazy(() => import("./JourneyPanel"));
 import "./App.css";
 
+const trainOptions = [
+  { key: "useShinkansen", label: "新幹線" },
+  { key: "useLimitedExpress", label: "有料特急" },
+] as const;
+
 function Arrow({ back = false }: { back?: boolean }) {
   return (
     <svg
@@ -46,7 +51,12 @@ export default function App() {
   const [stations, setStations] = useState<Stations | null>(initial.stations);
   const [editing, setEditing] = useState(!initial.stations);
   const [draft, setDraft] = useState<Stations>(
-    initial.stations ?? { nearby: "", destination: "", usePaidTrains: true },
+    initial.stations ?? {
+      nearby: "",
+      destination: "",
+      useShinkansen: true,
+      useLimitedExpress: true,
+    },
   );
   const [error, setError] = useState(initial.error);
   const [notice, setNotice] = useState("");
@@ -58,9 +68,11 @@ export default function App() {
   const [restored, setRestored] = useState<ActiveJourney>();
   const [searching, setSearching] = useState(false);
   const [tracking, setTracking] = useState(false);
+  const nearby = stations?.nearby;
+  const destination = stations?.destination;
   useEffect(() => {
-    if (stations)
-      void adaptOffline([stations.nearby, stations.destination]).then(
+    if (nearby && destination)
+      void adaptOffline([nearby, destination]).then(
         async (message) => {
           if ((await usablePackages()).length)
             await Promise.all([
@@ -71,7 +83,7 @@ export default function App() {
           setNotice(message);
         },
       );
-  }, [stations]);
+  }, [nearby, destination]);
   useEffect(() => {
     let alive = true;
     void readMeta("journey")
@@ -119,7 +131,8 @@ export default function App() {
           detected?.name ?? (reverse ? stations.destination : stations.nearby),
         to: reverse ? stations.nearby : stations.destination,
         departure: new Date(),
-        usePaidTrains: stations.usePaidTrains,
+        useShinkansen: stations.useShinkansen,
+        useLimitedExpress: stations.useLimitedExpress,
       }),
     );
   }
@@ -207,7 +220,8 @@ export default function App() {
     const cleaned = {
       nearby: draft.nearby.trim(),
       destination: draft.destination.trim(),
-      usePaidTrains: draft.usePaidTrains,
+      useShinkansen: draft.useShinkansen,
+      useLimitedExpress: draft.useLimitedExpress,
       ...(draft.nearbyId ? { nearbyId: draft.nearbyId } : {}),
       ...(draft.destinationId ? { destinationId: draft.destinationId } : {}),
     };
@@ -228,6 +242,17 @@ export default function App() {
       setError(
         "保存できませんでした。ブラウザの保存設定や空き容量を確認してください。",
       );
+    }
+  }
+  function toggleTrainOption(key: (typeof trainOptions)[number]["key"]) {
+    if (!stations || searching || tracking) return;
+    const next = { ...stations, [key]: !stations[key] };
+    try {
+      saveStations(next);
+      setStations(next);
+      setError("");
+    } catch {
+      setError("検索条件を保存できませんでした。");
     }
   }
   return (
@@ -349,19 +374,23 @@ export default function App() {
                   }
                 />
               </div>
-              <label className="paid-trains">
-                <input
-                  type="checkbox"
-                  checked={draft.usePaidTrains}
-                  aria-describedby="paid-trains-description"
-                  onChange={(event) =>
-                    setDraft({ ...draft, usePaidTrains: event.target.checked })
-                  }
-                />
-                有料列車を利用する
-              </label>
+              <div className="train-settings">
+                {trainOptions.map(({ key, label }) => (
+                  <label key={key} className="paid-trains">
+                    <input
+                      type="checkbox"
+                      checked={draft[key]}
+                      aria-describedby="paid-trains-description"
+                      onChange={(event) =>
+                        setDraft({ ...draft, [key]: event.target.checked })
+                      }
+                    />
+                    {label}を利用する
+                  </label>
+                ))}
+              </div>
               <p id="paid-trains-description" className="paid-trains-description">
-                Yahoo!乗換案内の検索で、オフにすると新幹線と有料特急を除外します。
+                オフにした列車はYahoo!乗換案内の検索候補から外れます。
               </p>
               {error && (
                 <p id="form-error" className="error" role="alert">
@@ -418,10 +447,38 @@ export default function App() {
               </div>
             </div>
             <div className="actions">
-              <p className="departure">
-                <span />
-                {tracking ? "移動モード中" : "今から出発"}
-              </p>
+              <div className="search-options">
+                <p className="departure">
+                  <span />
+                  {tracking ? "移動モード中" : "今から出発"}
+                </p>
+                <div
+                  className="train-toggles"
+                  role="group"
+                  aria-label="Yahoo!乗換案内の検索条件"
+                >
+                  {trainOptions.map(({ key, label }) => (
+                    <button
+                      key={key}
+                      type="button"
+                      aria-label={label}
+                      aria-pressed={stations![key]}
+                      disabled={searching || tracking}
+                      onClick={() => toggleTrainOption(key)}
+                    >
+                      {label}
+                      <span aria-hidden="true">
+                        {stations![key] ? "あり" : "なし"}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+              {error && (
+                <p className="error" role="alert">
+                  {error}
+                </p>
+              )}
               <button
                 className="route-button outbound"
                 onClick={() => void search(false)}
@@ -488,7 +545,8 @@ export default function App() {
                         from,
                         to,
                         departure: new Date(),
-                        usePaidTrains: stations!.usePaidTrains,
+                        useShinkansen: stations!.useShinkansen,
+                        useLimitedExpress: stations!.useLimitedExpress,
                       }),
                     )
                   }

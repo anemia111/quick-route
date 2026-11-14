@@ -14,37 +14,42 @@ it("validates, saves, reloads, edits and swaps stations", async () => {
   expect(screen.getByRole("alert")).toHaveTextContent("同じ駅");
   await user.clear(screen.getByLabelText("目的地駅"));
   await user.type(screen.getByLabelText("目的地駅"), "新宿");
-  const paidTrains = () =>
-    screen.getByRole("checkbox", { name: "有料列車を利用する" });
-  expect(paidTrains()).toBeChecked();
-  await user.click(paidTrains());
+  const shinkansen = () =>
+    screen.getByRole("checkbox", { name: "新幹線を利用する" });
+  expect(shinkansen()).toBeChecked();
+  await user.click(shinkansen());
   await user.click(screen.getByRole("button", { name: "保存してはじめる" }));
   expect(loadStations().stations).toEqual({
     nearby: "東京",
     destination: "新宿",
-    usePaidTrains: false,
+    useShinkansen: false,
+    useLimitedExpress: true,
   });
   view.unmount();
   render(<App />);
   expect(screen.getByRole("button", { name: /新宿へ/ })).toBeVisible();
   expect(screen.getByRole("button", { name: /東京へ/ })).toBeVisible();
   await user.click(screen.getByRole("button", { name: "設定を開く" }));
-  expect(paidTrains()).not.toBeChecked();
+  expect(shinkansen()).not.toBeChecked();
   await user.click(screen.getByRole("button", { name: /駅を入れ替え/ }));
   expect(screen.getByLabelText("最寄り駅")).toHaveValue("新宿");
   await user.click(screen.getByRole("button", { name: "変更を保存" }));
   expect(loadStations().stations).toEqual({
     nearby: "新宿",
     destination: "東京",
-    usePaidTrains: false,
+    useShinkansen: false,
+    useLimitedExpress: true,
   });
 });
-it("enables paid trains for saved stations without a search preference", () => {
+it.each([undefined, true, false])("carries over the legacy paid train preference %s", (usePaidTrains) => {
   localStorage.setItem(
     STORAGE_KEY,
-    JSON.stringify({ nearby: "東京", destination: "新宿" }),
+    JSON.stringify({ nearby: "東京", destination: "新宿", usePaidTrains }),
   );
-  expect(loadStations().stations?.usePaidTrains).toBe(true);
+  expect(loadStations().stations).toMatchObject({
+    useShinkansen: usePaidTrains ?? true,
+    useLimitedExpress: usePaidTrains ?? true,
+  });
 });
 it("recovers from corrupt storage", () => {
   localStorage.setItem(STORAGE_KEY, "{broken");
