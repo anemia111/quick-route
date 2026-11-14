@@ -27,19 +27,19 @@ describe("Yahoo public search URL", () => {
       ex: "1",
     });
   });
-  it("excludes Shinkansen and paid limited express trains when disabled", () => {
+  it.each([
+    { useShinkansen: false, useLimitedExpress: true, shin: "0", ex: "1" },
+    { useShinkansen: true, useLimitedExpress: false, shin: "1", ex: "0" },
+  ])("passes each train filter independently ($shin, $ex)", ({ shin, ex, ...options }) => {
     const params = new URL(
       yahooProvider.buildUrl({
         from: "東京",
         to: "新大阪",
         departure: new Date("2026-09-18T09:07:59Z"),
-        usePaidTrains: false,
+        ...options,
       }),
     ).searchParams;
-    expect(Object.fromEntries(params)).toMatchObject({
-      shin: "0",
-      ex: "0",
-    });
+    expect(Object.fromEntries(params)).toMatchObject({ shin, ex });
   });
   it("handles midnight and year rollover in Japan", () => {
     const params = new URL(

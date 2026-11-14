@@ -150,8 +150,17 @@ test("missing national data retains manual input and Yahoo departure/arrival ord
   await page.goto("./");
   await page.getByLabel("最寄り駅", { exact: true }).fill("鎌取");
   await page.getByLabel("目的地駅", { exact: true }).fill("水道橋");
-  await page.getByRole("checkbox", { name: "有料列車を利用する" }).uncheck();
   await page.getByRole("button", { name: "保存してはじめる" }).click();
+  const shinkansen = page.getByRole("button", { name: "新幹線", exact: true });
+  const limitedExpress = page.getByRole("button", { name: "有料特急", exact: true });
+  await expect(shinkansen).toHaveAttribute("aria-pressed", "true");
+  await shinkansen.click();
+  await limitedExpress.click();
+  await expect(limitedExpress).toHaveAttribute("aria-pressed", "false");
+  await limitedExpress.click();
+  await page.reload();
+  await expect(shinkansen).toHaveAttribute("aria-pressed", "false");
+  await expect(limitedExpress).toHaveAttribute("aria-pressed", "true");
   let external = "";
   await page.route("https://transit.yahoo.co.jp/**", (r) => {
     external = r.request().url();
@@ -168,7 +177,7 @@ test("missing national data retains manual input and Yahoo departure/arrival ord
   expect(params.get("s")).toBe("0");
   expect(params.get("type")).toBe("1");
   expect(params.get("shin")).toBe("0");
-  expect(params.get("ex")).toBe("0");
+  expect(params.get("ex")).toBe("1");
 });
 test("real packages are saved and usable offline", async ({
   page,

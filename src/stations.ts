@@ -3,7 +3,8 @@ export interface Stations {
   destination: string;
   nearbyId?: string;
   destinationId?: string;
-  usePaidTrains: boolean;
+  useShinkansen: boolean;
+  useLimitedExpress: boolean;
 }
 export const STORAGE_KEY = "quick-route.stations.v1";
 export function validateStations(value: Stations): string {
@@ -38,12 +39,21 @@ export function loadStations(): { stations: Stations | null; error: string } {
       validateStations(value as Stations)
     )
       throw new Error("Invalid settings");
+    const usePaidTrains =
+      !("usePaidTrains" in value && value.usePaidTrains === false);
     return {
       stations: {
         nearby: value.nearby.trim(),
         destination: value.destination.trim(),
-        usePaidTrains:
-          !("usePaidTrains" in value && value.usePaidTrains === false),
+        useShinkansen:
+          "useShinkansen" in value && typeof value.useShinkansen === "boolean"
+            ? value.useShinkansen
+            : usePaidTrains,
+        useLimitedExpress:
+          "useLimitedExpress" in value &&
+          typeof value.useLimitedExpress === "boolean"
+            ? value.useLimitedExpress
+            : usePaidTrains,
         ...("nearbyId" in value && typeof value.nearbyId === "string"
           ? { nearbyId: value.nearbyId }
           : {}),

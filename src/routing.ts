@@ -2,7 +2,8 @@ export interface RouteRequest {
   from: string;
   to: string;
   departure: Date;
-  usePaidTrains?: boolean;
+  useShinkansen?: boolean;
+  useLimitedExpress?: boolean;
 }
 export interface RouteProvider {
   buildUrl: (request: RouteRequest) => string;
@@ -10,7 +11,13 @@ export interface RouteProvider {
 // Verified against Yahoo!'s public search form and visible results on 2026-09-18.
 // No private API calls or scraping. All route rendering is owned by Yahoo!.
 export const yahooProvider: RouteProvider = {
-  buildUrl({ from, to, departure, usePaidTrains = true }) {
+  buildUrl({
+    from,
+    to,
+    departure,
+    useShinkansen = true,
+    useLimitedExpress = true,
+  }) {
     if (!from.trim() || !to.trim() || Number.isNaN(departure.getTime()))
       throw new Error("Invalid route request");
     const parts = new Intl.DateTimeFormat("en-GB", {
@@ -40,8 +47,8 @@ export const yahooProvider: RouteProvider = {
       userpass: "1",
       ws: "3",
       al: "1",
-      shin: usePaidTrains ? "1" : "0",
-      ex: usePaidTrains ? "1" : "0",
+      shin: useShinkansen ? "1" : "0",
+      ex: useLimitedExpress ? "1" : "0",
       hb: "1",
       lb: "1",
       sr: "1",
