@@ -5,6 +5,7 @@ import { routeProvider } from "./routing";
 import StationInput from "./StationInput";
 import ReturnHome from "./ReturnHome";
 import AppUpdate from "./AppUpdate";
+import Arrow from "./Arrow";
 import {
   adaptOffline,
   loadCatalog,
@@ -28,24 +29,6 @@ const trainOptions = [
   { key: "useLimitedExpress", label: "有料特急" },
 ] as const;
 
-function Arrow({ back = false }: { back?: boolean }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden="true"
-      style={{ transform: back ? "rotate(180deg)" : undefined }}
-    >
-      <path
-        d="M5 12h14m-6-6 6 6-6 6"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
 export default function App() {
   const [initial] = useState(loadStations);
   const [stations, setStations] = useState<Stations | null>(initial.stations);
