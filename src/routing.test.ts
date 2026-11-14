@@ -23,6 +23,22 @@ describe("Yahoo public search URL", () => {
       m2: "7",
       type: "1",
       s: "0",
+      shin: "1",
+      ex: "1",
+    });
+  });
+  it("excludes Shinkansen and paid limited express trains when disabled", () => {
+    const params = new URL(
+      yahooProvider.buildUrl({
+        from: "東京",
+        to: "新大阪",
+        departure: new Date("2026-09-18T09:07:59Z"),
+        usePaidTrains: false,
+      }),
+    ).searchParams;
+    expect(Object.fromEntries(params)).toMatchObject({
+      shin: "0",
+      ex: "0",
     });
   });
   it("handles midnight and year rollover in Japan", () => {

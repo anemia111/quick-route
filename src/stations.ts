@@ -3,6 +3,7 @@ export interface Stations {
   destination: string;
   nearbyId?: string;
   destinationId?: string;
+  usePaidTrains: boolean;
 }
 export const STORAGE_KEY = "quick-route.stations.v1";
 export function validateStations(value: Stations): string {
@@ -41,6 +42,8 @@ export function loadStations(): { stations: Stations | null; error: string } {
       stations: {
         nearby: value.nearby.trim(),
         destination: value.destination.trim(),
+        usePaidTrains:
+          !("usePaidTrains" in value && value.usePaidTrains === false),
         ...("nearbyId" in value && typeof value.nearbyId === "string"
           ? { nearbyId: value.nearbyId }
           : {}),
