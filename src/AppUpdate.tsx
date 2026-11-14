@@ -35,7 +35,6 @@ export default function AppUpdate({ busy }: { busy: boolean }) {
     }
   }
   return <div className="app-update">
-    <p>表示中の版：<a href={`https://github.com/anemia111/quick-route/commit/${__BUILD_COMMIT__}`}>{__BUILD_COMMIT__.slice(0, 7)}</a></p>
     {needRefresh ? <div role="status">
       <p>Quick Routeの新しい版を利用できます。登録した駅・保存済み時刻表は保持されます。</p>
       <button type="button" disabled={busy} onClick={() => window.location.reload()}>最新版を表示</button>

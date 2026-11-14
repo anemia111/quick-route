@@ -191,19 +191,29 @@ test("real packages are saved and usable offline", async ({
   await page.getByLabel("目的地駅", { exact: true }).fill("馬込");
   await page.getByRole("button", { name: /^馬込.*東京都/ }).click();
   await page.getByRole("button", { name: "保存してはじめる" }).click();
-  await expect(
-    page.getByText("利用する路線の時刻表を端末に保存しました。"),
-  ).toBeVisible({ timeout: 30000 });
+  await expect.poll(
+    () => page.evaluate(() => new Promise<number>((resolve, reject) => {
+      const request = indexedDB.open("quick-route.rail.v1");
+      request.onerror = () => reject(request.error);
+      request.onsuccess = () => {
+        const db = request.result;
+        const count = db.transaction("packages").objectStore("packages").count();
+        db.close();
+        count.onsuccess = () => resolve(count.result);
+        count.onerror = () => reject(count.error);
+      };
+    })),
+    { timeout: 30000 },
+  ).toBeGreaterThan(0);
   await page.evaluate(async () => {
     await navigator.serviceWorker.ready;
   });
   await page.reload();
-  await expect(
-    page.getByText("利用する路線の時刻表を端末に保存しました。"),
-  ).toBeVisible({ timeout: 30000 });
-  await expect(
-    page.getByRole("button", { name: "最寄り → 目的地 馬込へ", exact: true }),
-  ).toBeVisible();
+  const search = page.getByRole("button", { name: "最寄り → 目的地 馬込へ", exact: true });
+  const routes = page.getByLabel("経路候補");
+  await search.click();
+  await expect(routes).toBeVisible();
+  await routes.getByRole("button", { name: "閉じる" }).click();
   await context.setOffline(true);
   if (testInfo.project.name === "chromium") await page.reload();
   else
@@ -212,13 +222,8 @@ test("real packages are saved and usable offline", async ({
       description:
         "Playwright WebKit offline navigation encountered an internal error on Windows and Linux; checks offline IDB use without reloading. iPhone offline restart remains unverified.",
     });
-  await expect(
-    page.getByRole("button", { name: "最寄り → 目的地 馬込へ", exact: true }),
-  ).toBeVisible();
-  await page
-    .getByRole("button", { name: "最寄り → 目的地 馬込へ", exact: true })
-    .click();
-  await expect(page.getByLabel("経路候補")).toBeVisible({ timeout: 20000 });
+  await search.click();
+  await expect(routes).toBeVisible({ timeout: 20000 });
   await expect(page.getByText("この経路で移動を開始")).toBeVisible();
   await page.getByText("この経路で移動を開始").click();
   await page.getByText("追跡を終了", { exact: true }).click();

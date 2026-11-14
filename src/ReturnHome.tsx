@@ -129,9 +129,6 @@ export default function ReturnHome({
         {busy ? "近くの駅を探しています…" : "現在地から帰る"}
         <small>帰宅先：{home}</small>
       </button>
-      <p className="location-help">
-        近い駅から到着が早い順で自動検索します。徒歩時間は未計算です。位置座標は保存・送信しません。
-      </p>
       {busy && (
         <button className="cancel" onClick={cancel}>
           駅の検出をキャンセル
